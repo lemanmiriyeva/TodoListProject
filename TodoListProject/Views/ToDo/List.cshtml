@@ -1,0 +1,67 @@
+﻿
+@model ListViewModel
+    <div class="container">
+        <div class="card row">
+            <div class="card-header">Todo List</div>
+            <div class="card-body">
+                
+                <form asp-controller="ToDo" asp-action="Add" >
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input asp-for="ToDoList.ActionName" class="form-control" placeholder="Bir Todo girin">
+                        </div>
+                    </div>
+                      
+                    <button  class="btn btn-danger">ToDo Ekleyin</button>
+                        
+                </form>
+                
+                <hr/>
+            </div>
+            <div>
+                @if (TempData["message"] != null)
+                {
+                    <h5 class="alert alert-@TempData["className"]">
+                        @TempData["message"]
+                    </h5>
+                }
+            </div>
+            <div class="card-body">
+                <hr />
+                <h5 class="card-title">Todolar</h5>
+                <form  class="form-row">
+                    <div class="form-group col-md-6">
+                        <input placeholder="Bir Todo Arayin" asp-for="key" class="form-control" />
+                    </div>
+                    <button style="height: 2.4rem;"  class="btn btn-primary" asp-controller="ToDo" asp-action="List">Todo Ara</button>
+                </form>
+                <hr/>
+                @{
+                    if (Model.Lists.Count==0)
+                    {
+                        <h2 class="badge badge-danger">There is no</h2>
+                    }
+                    else
+                    {
+                        <ul class="list-group">
+                            @foreach (var item in Model.Lists)
+                            {
+                                <li class="list-group-item d-flex justify-content-between">
+                                    @item.ActionName
+                                    <a asp-controller="ToDo"asp-action="Delete" asp-route-id="@item.Id" class="delete-item"><i class="fa fa-remove"></i></a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+               
+                <hr/>
+                <form onclick="return confirm('Silmek istediğinizden eminmisiniz?')" >
+                <a style="color:beige" asp-controller="ToDo" asp-action="Clear" class="btn btn-dark">Tum Tasklari Temizleyin</a>
+               
+                </form>
+            </div>
+
+        </div>
+
+    </div>
